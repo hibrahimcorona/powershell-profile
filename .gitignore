@@ -1,3 +1,6 @@
-# Ignore the Modules and Scripts folders
+# Ignore possible old files from the Setup.
+[Oo]ld*.ps1
+
+# Ignore the Modules and Scripts folders.
 Modules/
 Scripts/
