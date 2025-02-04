@@ -25,4 +25,4 @@ if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
 
 Import-Module -Name Terminal-Icons
 
-oh-my-posh init pwsh --config 'C:\Users\Usuario\AppData\Local\Programs\oh-my-posh\themes\gruvbox.omp.json' | Invoke-Expression
+oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\gruvbox.omp.json' | Invoke-Expression
