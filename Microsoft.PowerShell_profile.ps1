@@ -4,8 +4,7 @@ function gpr { git pull --rebase }
 function gs { git status }
 function gss { git status -s }
 function ga { git add . }
-function gcm($message){ git commit -m "$message" }
-
+function gcom { git commit -m $args }
 
 ###     PSReadLineOptions
 $PSReadLineOptions = @{
