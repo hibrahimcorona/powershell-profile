@@ -18,11 +18,4 @@ $PSReadLineOptions = @{
 Set-PSReadLineOption @PSReadLineOptions
 
 ###     Pimp my terminal
-
-if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
-    Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck    
-}
-
-Import-Module -Name Terminal-Icons
-
 oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\gruvbox.omp.json' | Invoke-Expression
