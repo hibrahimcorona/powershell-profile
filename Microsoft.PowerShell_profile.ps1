@@ -5,6 +5,7 @@ function gs { git status }
 function gss { git status -s }
 function ga { git add . }
 function gcom { git commit -m $args }
+function glog { git log --oneline }
 
 ###     PSReadLineOptions
 $PSReadLineOptions = @{
