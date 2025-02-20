@@ -40,18 +40,18 @@ if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
     Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
 }
 
-
 function Install-NerdFonts {
     param (
-        [string]$FontName = "JetBrainsMono",
-        [string]$FontDisplayName = "JetBrains Mono NerdFont",
+        [string]$FontName = "CascadiaCode",
+        [string]$FontDisplayName = "CaskaydiaCove NF",
         [string]$Version = "3.3.0"
     )
 
     try {
+        Write-Host "Installing ${FontDisplayName} font"
         [void] [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing")
         $fontFamilies = (New-Object System.Drawing.Text.InstalledFontCollection).Families.Name
-        if ($fontFamilies -notcontains "${FontDisplayName}") {
+        if ($fontFamilies -notcontains "${FontDisplayName}" -or $fontFamilies -notcontains "${FontDisplayName}") {
             $fontZipUrl = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${Version}/${FontName}.zip"
             $zipFilePath = "$env:TEMP\${FontName}.zip"
             $extractPath = "$env:TEMP\${FontName}"
@@ -73,6 +73,7 @@ function Install-NerdFonts {
 
             Remove-Item -Path $extractPath -Recurse -Force
             Remove-Item -Path $zipFilePath -Force
+            Write-Host "Font ${FontDisplayName} installed successfully"
         }
         else {
             Write-Host "Font ${FontDisplayName} already installed"
@@ -82,6 +83,9 @@ function Install-NerdFonts {
         Write-Error "Failed to download or install ${FontDisplayName} font. Error: $_"
     }
 }
+
+Install-NerdFonts
+Install-NerdFonts("JetBrainsMono", "JetBrains Mono NerdFont", "3.3.0")
 
 # Profile creation or update
 if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
