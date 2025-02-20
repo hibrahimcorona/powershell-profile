@@ -87,8 +87,8 @@ function Install-NerdFonts {
 }
 $fontVersion = "3.3.0"
 Install-NerdFonts "CascadiaCode" "CaskaydiaCove NF" "$fontVersion"
-Install-NerdFonts "FiraCode" "Fira Code NerdFont"  "$fontVersion"
-Install-NerdFonts "JetBrainsMono" "JetBrains Mono NerdFont" "$fontVersion"
+Install-NerdFonts "FiraCode" "FiraCode Nerd Font"  "$fontVersion"
+Install-NerdFonts "JetBrainsMono" "JetBrainsMono NF" "$fontVersion"
 
 # Profile creation or update
 if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
