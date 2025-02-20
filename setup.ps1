@@ -40,6 +40,7 @@ if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
     Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
 }
 
+
 function Install-NerdFonts {
     param (
         [string]$FontName = "CascadiaCode",
@@ -52,6 +53,7 @@ function Install-NerdFonts {
         [void] [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing")
         $fontFamilies = (New-Object System.Drawing.Text.InstalledFontCollection).Families.Name
         if ($fontFamilies -notcontains "${FontDisplayName}" -or $fontFamilies -notcontains "${FontDisplayName}") {
+            Write-Host "Font name is $FontName"
             $fontZipUrl = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${Version}/${FontName}.zip"
             $zipFilePath = "$env:TEMP\${FontName}.zip"
             $extractPath = "$env:TEMP\${FontName}"
@@ -83,9 +85,10 @@ function Install-NerdFonts {
         Write-Error "Failed to download or install ${FontDisplayName} font. Error: $_"
     }
 }
-
-Install-NerdFonts
-Install-NerdFonts("JetBrainsMono", "JetBrains Mono NerdFont", "3.3.0")
+$fontVersion = "3.3.0"
+Install-NerdFonts "CascadiaCode" "CaskaydiaCove NF" "$fontVersion"
+Install-NerdFonts "FiraCode" "Fira Code NerdFont"  "$fontVersion"
+Install-NerdFonts "JetBrainsMono" "JetBrains Mono NerdFont" "$fontVersion"
 
 # Profile creation or update
 if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
