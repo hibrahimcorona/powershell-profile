@@ -1,3 +1,6 @@
+# Aliases
+Set-Alias -Name bash -Value "C:\Program Files\Git\bin\bash.exe"
+
 ####    Git Commands
 function gcl($url) { git clone $url }
 function gpr { git pull --rebase }
