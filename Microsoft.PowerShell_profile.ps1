@@ -31,7 +31,8 @@ function Pull-Branch {
         [string]$rootPath,
         [string]$branch = 'main'
     )
-
+    git pull origin $branch
+    Write-Host "Pulling subdirectories."
     Get-ChildItem -Path $rootPath -Directory -Recurse | ForEach-Object {
         if (Test-Path "$($_.FullName)\.git") {
             Write-Host "Pulling $branch branch in $($_.FullName)"
