@@ -32,11 +32,11 @@ function Pull-Branch {
         [string]$branch = 'main'
     )
     git pull origin $branch
-    Write-Host "Pulling subdirectories."
+    Write-Host "Pulling subdirectories." -ForegroundColor Yellow
 
     Get-ChildItem -Path $rootPath -Directory -Recurse | ForEach-Object {
         if (Test-Path "$($_.FullName)\.git") {
-            Write-Host "Pulling $branch branch in $($_.FullName)"
+            Write-Host "Pulling $branch branch in $($_.FullName)" -ForegroundColor Yellow
 
             Push-Location $_.FullName
             git pull origin $branch
@@ -47,13 +47,13 @@ function Pull-Branch {
 
 # Crate a new function that will clear the branches that are non-existent in the remote repository.
 function Clear-NonExistentBranches {
-    Write-Host "Clearing non-existent branches."
+    Write-Host "Clearing non-existent branches." -ForegroundColor Yellow
     
     git fetch --prune
     git branch -vv | Where-Object { $_ -match ": gone]" } | ForEach-Object {
         $branch = $_ -replace '\s+.*$'
         git branch -D $branch
 
-        Write-Host "Branch $branch has been deleted."
+        Write-Host "Branch $branch has been deleted." -ForegroundColor Yellow
     }
 }
