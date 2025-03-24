@@ -47,41 +47,55 @@ function Pull-Branch {
 
 # Crate a new function that will clear the branches that are non-existent in the remote repository.
 function Clear-NonExistentBranches {
-    # Write-Host "Clearing non-existent branches." -ForegroundColor Yellow
-    
-    # git fetch --prune
-    # git branch -vv | Where-Object { $_ -match ": gone]" } | ForEach-Object {
-    #     $branch = $_ -replace '\s+.*$'
-    #     git branch -D $branch
-
-    #     Write-Host "Branch $branch has been deleted." -ForegroundColor Yellow
-    # }
-
     # Ensure the script stops on errors
     $ErrorActionPreference = "Stop"
 
-    # Fetch the latest remote branches
-    Write-Output "Fetching latest branches from remote..."
-    git fetch --prune
+    # Function to clean stale branches in a given Git repository
+    function Clean-StaleBranches($repoPath) {
+        Write-Output "Processing repository at: $repoPath"
+        Set-Location $repoPath
 
-    # Get all local branches
-    $localBranches = git branch | ForEach-Object { $_.Trim() }
+        # Fetch latest remote branches and prune deleted ones
+        Write-Output "Fetching latest branches from remote..."
+        git fetch --prune
 
-    # Get all remote branches
-    $remoteBranches = git branch -r | ForEach-Object { $_.Trim() -replace '^origin/', '' }
+        # Get all local branches
+        $localBranches = git branch | ForEach-Object { $_.Trim() }
 
-    # Identify local branches that do not exist on remote
-    $branchesToDelete = $localBranches | Where-Object { $_ -ne "main" -and $_ -ne "master" -and $_ -notin $remoteBranches }
+        # Get all remote branches
+        $remoteBranches = git branch -r | ForEach-Object { $_.Trim() -replace '^origin/', '' }
 
-    if ($branchesToDelete) {
-        Write-Output "Deleting the following branches:"
-        $branchesToDelete | ForEach-Object { Write-Output $_ }
+        # Identify local branches that no longer exist on remote
+        $branchesToDelete = $localBranches | Where-Object { $_ -ne "main" -and $_ -ne "master" -and $_ -notin $remoteBranches }
 
-        # Delete each stale branch
-        $branchesToDelete | ForEach-Object { git branch -D $_ }
+        if ($branchesToDelete) {
+            Write-Output "Deleting the following stale branches:"
+            $branchesToDelete | ForEach-Object { Write-Output $_ }
+
+            # Delete each stale branch
+            $branchesToDelete | ForEach-Object { git branch -D $_ }
+        }
+        else {
+            Write-Output "No stale branches found in $repoPath."
+        }
+
+        # Return to the original directory
+        Set-Location - 
     }
-    else {
-        Write-Output "No local branches need to be deleted."
+
+    # Get the root Git repository
+    $rootRepo = Get-Location
+
+    # Process the main repository
+    Clean-StaleBranches $rootRepo
+
+    # Detect submodules and nested repositories
+    $gitDirs = Get-ChildItem -Recurse -Directory -Force | Where-Object { Test-Path "$($_.FullName)\.git" }
+
+    # Process each detected submodule or nested repository
+    foreach ($dir in $gitDirs) {
+        Clean-StaleBranches $dir.FullName
     }
 
+    Write-Output "Cleanup complete!"
 }
