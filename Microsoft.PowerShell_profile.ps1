@@ -45,7 +45,6 @@ function Pull-Branch {
     }
 }
 
-# Crate a new function that will clear the branches that are non-existent in the remote repository.
 function Clear-NonExistentBranches {
     # Ensure the script stops on errors
     $ErrorActionPreference = "Stop"
@@ -98,4 +97,43 @@ function Clear-NonExistentBranches {
     }
 
     Write-Output "Cleanup complete!"
+}
+
+function Show-Branches {
+    # Ensure the script stops on errors
+    $ErrorActionPreference = "Stop"
+
+    # Get the root Git repository
+    $rootRepo = Get-Location
+    Write-Output "🔍 Checking main repository:"
+    Get-CurrentBranch $rootRepo
+
+    # Detect submodules and nested repositories
+    $gitDirs = Get-ChildItem -Recurse -Directory -Force | Where-Object { Test-Path "$($_.FullName)\.git" }
+
+    # Process each detected submodule or nested repository
+    if ($gitDirs) {
+        Write-Output "`n🔍 Checking submodules and nested repositories:"
+        foreach ($dir in $gitDirs) {
+            Get-CurrentBranch $dir.FullName
+        }
+    }
+    else {
+        Write-Output "`n✅ No submodules or nested repositories found."
+    }
+
+    Write-Output "`n🚀 Done!"
+
+}
+
+function Get-CurrentBranch($repoPath) {
+    Set-Location $repoPath
+    $branch = git rev-parse --abbrev-ref HEAD 2>$null
+    if ($branch) {
+        Write-Output "📌 [$branch] - $repoPath"
+    }
+    else {
+        Write-Output "⚠️ Not a valid Git repository: $repoPath"
+    }
+    Set-Location - # Return to the original directory
 }
