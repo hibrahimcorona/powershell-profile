@@ -31,6 +31,7 @@ function Pull-Branch {
         [string]$rootPath,
         [string]$branch = 'main'
     )
+    Write-Host "Pulling $branch"
     git pull origin $branch
     Write-Host "Pulling subdirectories." -ForegroundColor Yellow
 
