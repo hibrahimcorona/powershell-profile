@@ -9,7 +9,8 @@ function gss { git status -s }
 function ga { git add . }
 function gcom { git commit -m $args }
 function glog { git log --oneline }
-function nano ($File) { bash -c "nano $File" }
+function gbs { git branch }
+function gc-b { git checkout -B  }
 
 ###     PSReadLineOptions
 $PSReadLineOptions = @{
@@ -31,7 +32,7 @@ function Pull-Branch {
         [string]$rootPath,
         [string]$branch = 'main'
     )
-    Write-Host "Pulling $branch"
+    Write-Host "Pulling $branch" -ForegroundColor Yellow
     git pull origin $branch
     Write-Host "Pulling subdirectories." -ForegroundColor Yellow
 
