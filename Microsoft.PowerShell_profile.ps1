@@ -115,13 +115,13 @@ function Show-Branches {
 
     # Process each detected submodule or nested repository
     if ($gitDirs) {
-        Write-Output "Checking submodules and nested repositories:"
+        Write-Output "Checking submodules and nested repositories:" -ForegroundColor Yellow
         foreach ($dir in $gitDirs) {
             Get-CurrentBranch $dir.FullName
         }
     }
     else {
-        Write-Output "No submodules or nested repositories found."
+        Write-Output "No submodules or nested repositories found." -ForegroundColor Red
     }
 
     Write-Output "`Done!"
@@ -135,7 +135,7 @@ function Get-CurrentBranch($repoPath) {
         Write-Output "[$branch] - $repoPath"
     }
     else {
-        Write-Output "Not a valid Git repository: $repoPath"
+        Write-Output "Not a valid Git repository: $repoPath" -ForegroundColor Red
     }
     Set-Location - # Return to the original directory
 }
