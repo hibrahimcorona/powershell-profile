@@ -53,11 +53,11 @@ function Clear-NonExistentBranches {
 
     # Function to clean stale branches in a given Git repository
     function Clean-StaleBranches($repoPath) {
-        Write-Output "Processing repository at: $repoPath"
+        Write-Host "Processing repository at: $repoPath"
         Set-Location $repoPath
 
         # Fetch latest remote branches and prune deleted ones
-        Write-Output "Fetching latest branches from remote..."
+        Write-Host "Fetching latest branches from remote..."
         git fetch --prune
 
         # Get all local branches
@@ -70,14 +70,14 @@ function Clear-NonExistentBranches {
         $branchesToDelete = $localBranches | Where-Object { $_ -ne "main" -and $_ -ne "master" -and $_ -notin $remoteBranches }
 
         if ($branchesToDelete) {
-            Write-Output "Deleting the following stale branches:"
-            $branchesToDelete | ForEach-Object { Write-Output $_ }
+            Write-Host "Deleting the following stale branches:"
+            $branchesToDelete | ForEach-Object { Write-Host $_ }
 
             # Delete each stale branch
             $branchesToDelete | ForEach-Object { git branch -D $_ }
         }
         else {
-            Write-Output "No stale branches found in $repoPath."
+            Write-Host "No stale branches found in $repoPath."
         }
 
         # Return to the original directory
@@ -98,7 +98,7 @@ function Clear-NonExistentBranches {
         Clean-StaleBranches $dir.FullName
     }
 
-    Write-Output "Cleanup complete!"
+    Write-Host "Cleanup complete!"
 }
 
 function Show-Branches {
@@ -107,7 +107,7 @@ function Show-Branches {
 
     # Get the root Git repository
     $rootRepo = Get-Location
-    Write-Output "Checking main repository:"
+    Write-Host "Checking main repository:" -ForegroundColor Yellow
     Get-CurrentBranch $rootRepo
 
     # Detect submodules and nested repositories
@@ -115,16 +115,16 @@ function Show-Branches {
 
     # Process each detected submodule or nested repository
     if ($gitDirs) {
-        Write-Output "Checking submodules and nested repositories:" -ForegroundColor Yellow
+        Write-Host "Checking submodules and nested repositories:" -ForegroundColor Yellow
         foreach ($dir in $gitDirs) {
             Get-CurrentBranch $dir.FullName
         }
     }
     else {
-        Write-Output "No submodules or nested repositories found." -ForegroundColor Red
+        Write-Host "No submodules or nested repositories found." -ForegroundColor Red
     }
 
-    Write-Output "`Done!"
+    Write-Host "Done!" -ForegroundColor Yellow
 
 }
 
@@ -132,10 +132,10 @@ function Get-CurrentBranch($repoPath) {
     Set-Location $repoPath
     $branch = git rev-parse --abbrev-ref HEAD 2>$null
     if ($branch) {
-        Write-Output "[$branch] - $repoPath"
+        Write-Host "[$branch] - $repoPath"
     }
     else {
-        Write-Output "Not a valid Git repository: $repoPath" -ForegroundColor Red
+        Write-Host "Not a valid Git repository: $repoPath" -ForegroundColor Red
     }
     Set-Location - # Return to the original directory
 }
