@@ -26,7 +26,10 @@ Set-PSReadLineOption @PSReadLineOptions
 ###     Pimp my terminal
 oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\gruvbox.omp.json' | Invoke-Expression
 
-###    Functions
+#################################
+######### GIT FUNCTIONS #########
+#################################
+
 function Pull-Branch {
     param (
         [string]$rootPath,
@@ -138,4 +141,16 @@ function Get-CurrentBranch($repoPath) {
         Write-Host "Not a valid Git repository: $repoPath" -ForegroundColor Red
     }
     Set-Location - # Return to the original directory
+}
+
+#####################################
+######### WINDOWS FUNCTIONS #########
+#####################################
+
+function Rename {
+    param (
+        [string]$path,
+        [string]$newPath
+    )
+    Rename-Item -Path $path -NewName $newPath
 }
