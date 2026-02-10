@@ -24,7 +24,7 @@ $PSReadLineOptions = @{
 Set-PSReadLineOption @PSReadLineOptions
 
 ###     Pimp my terminal
-oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\gruvbox.omp.json' | Invoke-Expression
+oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\honukai.omp.json' | Invoke-Expression
 
 ###    Functions
 function Pull-Branch {
