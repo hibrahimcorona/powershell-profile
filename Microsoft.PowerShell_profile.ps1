@@ -10,7 +10,7 @@ function ga { git add . }
 function gcom { git commit -m $args }
 function glog { git log --oneline }
 function gbs { git branch }
-function gc-b { git checkout -B  }
+function gc-b { git checkout -B }
 
 ###     PSReadLineOptions
 $PSReadLineOptions = @{
@@ -153,4 +153,12 @@ function Rename {
         [string]$newPath
     )
     Rename-Item -Path $path -NewName $newPath
+}
+
+function tail {
+    param (
+        [string]$path,
+        [string]$lines=10
+    )
+    Get-Content -Path $path -Tail $lines
 }
