@@ -163,7 +163,7 @@ function tail {
     Get-Content -Path $path -Tail $lines
 }
 
-function me() {
+function me {
     if (Test-Path -Path "c:\repo") { Set-Location "C:\repo" } 
     elseif (Test-Path -Path "c:\code") { Set-Location "c:\code" }
 }
