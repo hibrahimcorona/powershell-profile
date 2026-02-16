@@ -158,7 +158,12 @@ function Rename {
 function tail {
     param (
         [string]$path,
-        [string]$lines=10
+        [string]$lines = 10
     )
     Get-Content -Path $path -Tail $lines
+}
+
+function me() {
+    if (Test-Path -Path "c:\repo") { Set-Location "C:\repo" } 
+    elseif (Test-Path -Path "c:\code") { Set-Location "c:\code" }
 }
