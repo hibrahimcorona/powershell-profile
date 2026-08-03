@@ -42,7 +42,7 @@ function gc-b { git checkout -B }
 function gco($branch) { git checkout $branch }
 function gcob($branch) { git checkout -b $branch }
 function gd { git diff }
-function gp { git push }
+function gpu { git push }
 function gpf { git push --force-with-lease }
 
 ###     PSReadLineOptions
