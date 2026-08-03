@@ -1,3 +1,6 @@
+# Customization
+$ENV:STARSHIP_CONFIG = "$HOME/.config/starship.toml"
+
 # Aliases
 Set-Alias -Name bash -Value "C:\Program Files\Git\bin\bash.exe"
 

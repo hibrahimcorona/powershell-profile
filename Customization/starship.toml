@@ -1,7 +1,5 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-add_newline = true
-
 format = """
 $directory\
 $git_branch\
@@ -14,9 +12,59 @@ $line_break\
 $character\
 """
 
+palette = "nord"
+
 [fill]
 symbol = ' '
 
+[directory]
+style = 'fg:frost_ice'
+format = '[$path ]($style)'
+truncation_length = 3
+truncation_symbol = '.../'
+truncate_to_repo = false
+
+[git_branch]
+style = 'fg:aurora_yellow'
+format = '[$symbol$branch(:$remote_branch) ]($style)'
+
+[git_status]
+style = 'fg:aurora_green'
+format = '([$all_status$ahead_behind]($style) )'
+
 [dotnet]
-style = 'bold blue'
+style = 'fg:frost_ocean'
+symbol = '.NET '
+format = '[$symbol($version )]($style)'
 detect_extensions = ['csproj', 'fsproj', 'xproj', 'sln', 'slnx']
+detect_files = ['global.json', 'Directory.Build.props', 'Directory.Build.targets']
+
+[cmd_duration]
+min_time = 10000
+style = 'fg:aurora_orange'
+format = '[⏱ $duration]($style) '
+
+[palettes.nord]
+# Polar Night
+polar_night_dark      = "#2e3440"
+polar_night_medium    = "#3b4252"
+polar_night_light     = "#434c5e"
+polar_night_bright    = "#4c566a"
+
+# Snow Storm
+snow_storm_dark       = "#d8dee9"
+snow_storm_medium     = "#e5e9f0"
+snow_storm_light      = "#eceff4"
+
+# Frost
+frost_teal            = "#8fbcbb"
+frost_ice             = "#88c0d0"
+frost_arctic          = "#81a1c1"
+frost_ocean           = "#5e81ac"
+
+# Aurora
+aurora_red            = "#bf616a"
+aurora_orange         = "#d08770"
+aurora_yellow         = "#ebcb8b"
+aurora_green          = "#a3be8c"
+aurora_purple         = "#b48ead"
