@@ -1,5 +1,18 @@
-# Customization
+#################################
+######### CUSTOMIZATION #########
+#################################
+
 $ENV:STARSHIP_CONFIG = "$HOME/.config/starship.toml"
+
+if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
+    fastfetch -c "$HOME/.config/fastfetch/config.jsonc"
+}
+
+# Oh-My-Posh
+#oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\honukai.omp.json' | Invoke-Expression
+# Starship
+Invoke-Expression (&starship init powershell)
+
 
 # Aliases
 Set-Alias -Name bash -Value "C:\Program Files\Git\bin\bash.exe"
@@ -25,12 +38,6 @@ $PSReadLineOptions = @{
 }
 
 Set-PSReadLineOption @PSReadLineOptions
-
-###     Pimp my terminal
-#oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\honukai.omp.json' | Invoke-Expression
-
-# Starship
-Invoke-Expression (&starship init powershell)
 
 #################################
 ######### GIT FUNCTIONS #########
