@@ -1,7 +1,7 @@
 {
-  "logo": {
+ "logo": {
     "type": "file",
-    "source": "$HOME/.config/fastfetch/koala.txt",
+    "source": "$env:USERPROFILE\\.config\\fastfetch\\koala.txt",
     "color": {
       "1": "#F5E0DC",
       "2": "#F2CDCD",

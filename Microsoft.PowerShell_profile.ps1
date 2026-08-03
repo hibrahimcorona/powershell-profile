@@ -5,7 +5,8 @@
 $ENV:STARSHIP_CONFIG = "$HOME/.config/starship.toml"
 
 if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
-    fastfetch -c "$HOME/.config/fastfetch/config.jsonc"
+    #fastfetch -c "$HOME/.config/fastfetch/config.jsonc"
+    fastfetch --logo "$env:USERPROFILE\.config\fastfetch\koala.txt"
 }
 
 # Oh-My-Posh
@@ -16,6 +17,19 @@ Invoke-Expression (&starship init powershell)
 
 # Aliases
 Set-Alias -Name bash -Value "C:\Program Files\Git\bin\bash.exe"
+
+$nvimPath = "C:\Program Files\Neovim\bin\nvim.exe"
+$codePath = "$env:USERPROFILE\AppData\Local\Programs\Microsoft VS Code\"
+
+if ([System.IO.File]::Exists($nvimPath)) {
+    $env:EDITOR = $nvimPath
+}
+elseif ([System.IO.File]::Exists($codePath)) {
+    $env:EDITOR = "$codePath\Code.exe"
+}
+else {
+    $env:EDITOR = 'notepad.exe'
+}
 
 ####    Git Commands
 function gcl($url) { git clone $url }
@@ -168,6 +182,14 @@ function Rename {
     Rename-Item -Path $path -NewName $newPath
 }
 
+function head {
+    param(
+        [string]$path,
+        [string]$lines = 10
+    )
+    Get-Content -Path $path -Head $lines
+}
+
 function tail {
     param (
         [string]$path,
@@ -176,29 +198,80 @@ function tail {
     Get-Content -Path $path -Tail $lines
 }
 
+function touch($file) { "" | Out-File $file -Encoding ASCII }
+
+function ff($name) { 
+    Get-ChildItem -recurse -filter "*$name*" -ErrorAction SilentlyContinue | ForEach-Object {
+        Write-Output "$($_.directory)\$($_)"
+    }
+}
+
+function reload() {
+    . $PROFILE
+}
+
 function me {
     if (Test-Path -Path "d:\code") { Set-Location "d:\code" } 
     elseif (Test-Path -Path "c:\repo") { Set-Location "C:\repo" } 
     elseif (Test-Path -Path "c:\code") { Set-Location "c:\code" }
 }
 
-function splitaudio {
-    param (
-        [string]$videoFile
-    )
+function ll { Get-ChildItem -Path . -Force }
 
-    if ([string]::IsNullOrWhiteSpace($videoFile)) {
-        Write-Error "No video file was provided!"  
-        return # Stop execution if empty
+function Update-PowerShell {
+    [CmdletBinding(SupportsShouldProcess)]
+    param()
+
+    if (Get-Command -Name 'Update-PowerShell_Override' -ErrorAction SilentlyContinue) {
+        Update-PowerShell_Override @PSBoundParameters
+        return
     }
-    else {
-        $input_file = $videoFile
-        
-        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:0 "$($input_file)_1.wav"
-        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:1 "$($input_file)_2.wav"
-        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:2 "$($input_file)_3.wav"
-        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:3 "$($input_file)_4.wav"
-        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:4 "$($input_file)_5.wav"
-        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:5 "$($input_file)_6.wav"   
+
+    if (-not (Test-Command winget)) {
+        Write-Warning 'winget is required to update PowerShell automatically.'
+        return
     }
+
+    try {
+        $release = Invoke-RestMethod -Uri 'https://api.github.com/repos/PowerShell/PowerShell/releases/latest' -ErrorAction Stop
+        $currentVersion = [version]$PSVersionTable.PSVersion
+        $latestVersion = [version]($release.tag_name -replace '^v', '')
+
+        if ($currentVersion -ge $latestVersion) {
+            Write-Host "PowerShell $currentVersion is up to date." -ForegroundColor Green
+            return
+        }
+
+        if ($PSCmdlet.ShouldProcess("PowerShell $currentVersion", "Upgrade to $latestVersion")) {
+            winget upgrade --id Microsoft.PowerShell --exact --accept-source-agreements --accept-package-agreements
+            if ($LASTEXITCODE -ne 0) {
+                Write-Error "winget failed to update PowerShell. Exit code: $LASTEXITCODE"
+                return
+            }
+            Write-Host 'PowerShell has been updated. Restart your shell to use the new version.' -ForegroundColor Magenta
+        }
+    } catch {
+        Write-Error "Failed to update PowerShell. Error: $_"
+    }
+}
+
+
+function Test-Command {
+    param([Parameter(Mandatory)][string]$Name)
+    $null -ne (Get-Command -Name $Name -ErrorAction SilentlyContinue)
+}
+
+# Dotnet Aliases
+Set-Alias -Name d -Value dotnet
+function dw { dotnet watch run }
+function dt { dotnet test }
+function db { dotnet build }
+function d-ef { dotnet ef }
+function dcb { dotnet clean && dotnet build }
+
+# Clean all bin and obj folders recursively (crucial for .NET troubleshooting)
+function Clear-DotNetArtifacts {
+    Write-Host "Cleaning bin and obj folders..." -ForegroundColor Yellow
+    Get-ChildItem -Path . -Include bin, obj -Recurse -Directory | Remove-Item -Recurse -Force
+    Write-Host "Cleanup complete!" -ForegroundColor Green
 }
