@@ -3,13 +3,11 @@ $directory\
 $git_branch\
 $git_status\
 $fill\
-$lua\
-$python\
 $dotnet\
-$docker_context\
 $jobs\
 $cmd_duration\
-$character
+$line_break\
+$character\
 """
 
 [fill]
