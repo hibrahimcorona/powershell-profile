@@ -23,11 +23,9 @@ $codePath = "$env:USERPROFILE\AppData\Local\Programs\Microsoft VS Code\"
 
 if ([System.IO.File]::Exists($nvimPath)) {
     $env:EDITOR = $nvimPath
-}
-elseif ([System.IO.File]::Exists($codePath)) {
-    $env:EDITOR = "$codePath\Code.exe"
-}
-else {
+} elseif (Get-Command code -ErrorAction SilentlyContinue) {
+    $env:EDITOR = 'code'
+} else {
     $env:EDITOR = 'notepad.exe'
 }
 
@@ -41,6 +39,11 @@ function gcom { git commit -m $args }
 function glog { git log --oneline }
 function gbs { git branch }
 function gc-b { git checkout -B }
+function gco($branch) { git checkout $branch }
+function gcob($branch) { git checkout -b $branch }
+function gd { git diff }
+function gp { git push }
+function gpf { git push --force-with-lease }
 
 ###     PSReadLineOptions
 $PSReadLineOptions = @{
@@ -271,7 +274,7 @@ function dw { dotnet watch run }
 function dt { dotnet test }
 function db { dotnet build }
 function d-ef { dotnet ef }
-function dcb { dotnet clean && dotnet build }
+function dcb { dotnet clean; if ($LASTEXITCODE -eq 0) { dotnet build } }
 
 # Clean all bin and obj folders recursively (crucial for .NET troubleshooting)
 function Clear-DotNetArtifacts {

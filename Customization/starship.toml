@@ -39,6 +39,14 @@ format = '[$symbol($version )]($style)'
 detect_extensions = ['csproj', 'fsproj', 'xproj', 'sln', 'slnx']
 detect_files = ['global.json', 'Directory.Build.props', 'Directory.Build.targets']
 
+[shell]
+format = '[$indicator]($style) '
+powershell_indicator = 'psh'
+unknown_indicator = 'mystery shell'
+style = 'white bold'
+disabled = false
+detect_extensions = [ 'ps1' ]
+
 [cmd_duration]
 min_time = 10000
 style = 'fg:aurora_orange'
