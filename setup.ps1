@@ -19,9 +19,10 @@ if (-not (Test-InternetConnection)) {
 
 try {
     winget install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
+    winget install -e --accept-source-agreements --accept-package-agreements Starship.Starship
 }
 catch {
-    Write-Error "Failed to install Oh My Posh. Error: $_"
+    Write-Error "Failed to install Oh My Posh or Starship. Error: $_"
 }
 
 if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {

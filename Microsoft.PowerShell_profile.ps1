@@ -24,7 +24,8 @@ $PSReadLineOptions = @{
 Set-PSReadLineOption @PSReadLineOptions
 
 ###     Pimp my terminal
-oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\honukai.omp.json' | Invoke-Expression
+#oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\honukai.omp.json' | Invoke-Expression
+Invoke-Expression (&starship init powershell)
 
 #################################
 ######### GIT FUNCTIONS #########
@@ -164,6 +165,28 @@ function tail {
 }
 
 function me {
-    if (Test-Path -Path "c:\repo") { Set-Location "C:\repo" } 
+    if (Test-Path -Path "d:\code") { Set-Location "d:\code" } 
+    elseif (Test-Path -Path "c:\repo") { Set-Location "C:\repo" } 
     elseif (Test-Path -Path "c:\code") { Set-Location "c:\code" }
+}
+
+function splitaudio {
+    param (
+        [string]$videoFile
+    )
+
+    if ([string]::IsNullOrWhiteSpace($videoFile)) {
+        Write-Error "No video file was provided!"  
+        return # Stop execution if empty
+    }
+    else {
+        $input_file = $videoFile
+        
+        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:0 "$($input_file)_1.wav"
+        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:1 "$($input_file)_2.wav"
+        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:2 "$($input_file)_3.wav"
+        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:3 "$($input_file)_4.wav"
+        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:4 "$($input_file)_5.wav"
+        & "C:\ffmpeg\bin\ffmpeg.exe" -i $input_file -map 0:a:5 "$($input_file)_6.wav"   
+    }
 }
