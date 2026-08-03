@@ -49,6 +49,10 @@ $PSReadLineOptions = @{
     HistorySearchCursorMovesToEnd = $true
     PredictionSource              = 'History'
     PredictionViewStyle           = 'ListView'
+    BellStyle                    = 'None'
+    Colors                          = @{
+        InlinePrediction = "`e[38;5;238m"
+    }
 }
 
 Set-PSReadLineOption @PSReadLineOptions
