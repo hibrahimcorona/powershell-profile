@@ -277,8 +277,14 @@ function d-ef { dotnet ef }
 function dcb { dotnet clean; if ($LASTEXITCODE -eq 0) { dotnet build } }
 
 # Clean all bin and obj folders recursively (crucial for .NET troubleshooting)
+# function Clear-DotNetArtifacts {
+#     Write-Host "Cleaning bin and obj folders..." -ForegroundColor Yellow
+#     Get-ChildItem -Path . -Include bin, obj -Recurse -Directory | Remove-Item -Recurse -Force
+#     Write-Host "Cleanup complete!" -ForegroundColor Green
+# }
+
 function Clear-DotNetArtifacts {
     Write-Host "Cleaning bin and obj folders..." -ForegroundColor Yellow
-    Get-ChildItem -Path . -Include bin, obj -Recurse -Directory | Remove-Item -Recurse -Force
+    Get-ChildItem -Path .\* -Include bin, obj -Recurse -Directory | Remove-Item -Recurse -Force
     Write-Host "Cleanup complete!" -ForegroundColor Green
 }
