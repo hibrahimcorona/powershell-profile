@@ -18,8 +18,7 @@ if (-not (Test-InternetConnection)) {
 }
 
 try {
-    # winget install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
-    winget install -e --accept-source-agreements --accept-package-agreements Starship.Starship
+    winget install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
 }
 catch {
     Write-Error "Failed to install Oh My Posh or Starship. Error: $_"

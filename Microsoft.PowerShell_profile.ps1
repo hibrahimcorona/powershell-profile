@@ -2,15 +2,12 @@
 ######### CUSTOMIZATION #########
 #################################
 
-$ENV:STARSHIP_CONFIG = "$HOME/.config/starship/starship.toml"
-
 if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
-    #fastfetch -c "$HOME/.config/fastfetch/config.jsonc"
     fastfetch --logo "$env:USERPROFILE\.config\fastfetch\koala.txt"
 }
 
 # Starship
-Invoke-Expression (&starship init powershell)
+oh-my-posh init pwsh | Invoke-Expression
 
 # Aliases
 Set-Alias -Name bash -Value "C:\Program Files\Git\bin\bash.exe"
