@@ -18,7 +18,7 @@ if (-not (Test-InternetConnection)) {
 }
 
 try {
-    winget install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
+    # winget install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
     winget install -e --accept-source-agreements --accept-package-agreements Starship.Starship
 }
 catch {
@@ -26,11 +26,11 @@ catch {
 }
 
 if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
-    Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck    
+    Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
 }
 
 if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
-    Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck    
+    Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
 }
 
 if (-not (Get-Module -ListAvailable -Name z)) {
@@ -125,4 +125,15 @@ else {
     catch {
         Write-Error "Failed to backup and update the profile. Error: $_"
     }
+}
+
+$currentUser = [Environment]::UserName
+$folderPath = "C:\.config\vscode"
+if (-not (Test-Path -Path $folderPath)) {
+    New-Item -Path $folderPath -ItemType Directory
+    New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.css" -Target "C:\Users\${currentUser}\Documents\Powershell\Customization\vscode\custom.css"
+    Write-Host "Folder created and symbolic link established."
+} else {
+    New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.css" -Target "C:\Users\${currentUser}   \Documents\Powershell\Customization\vscode\custom.css"
+    Write-Host "Folder already exists."
 }
