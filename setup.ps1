@@ -179,11 +179,18 @@ if (-not (Test-Path -Path "$folderPath\ohmyposh")) {
     Write-Host "Created directory: $folderPath\ohmyposh"
 }
 
+if (-not (Test-Path -Path "$folderPath\fastfetch")) {
+    New-Item -Path "$folderPath\fastfetch" -ItemType Directory | Out-Null
+    Write-Host "Created directory: $folderPath\fastfetch"
+}
+
 # Define the links to manage: LinkPath => TargetPath
 $links = @{
     "$folderPath\vscode\custom.css"                  = "$sourceDir\vscode\custom.css"
     "$folderPath\vscode\custom.js"                   = "$sourceDir\vscode\custom.js"
     "$folderPath\ohmyposh\catpuccino-mocha.omp.json" = "$sourceDir\ohmyposh\catpuccino-mocha.omp.json"
+    "$folderPath\fastfetch\config.jsonc"                   = "$sourceDir\fastfetch\config.jsonc"
+    "$folderPath\fastfetch\koala.txt"                   = "$sourceDir\fastfetch\koala.txt"
 }
 
 # Create links only if they do not already exist

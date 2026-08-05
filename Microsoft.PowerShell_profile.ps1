@@ -3,7 +3,7 @@
 #################################
 
 if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
-    fastfetch --logo "$env:USERPROFILE\.config\fastfetch\koala.txt"
+    fastfetch --logo "c:\.config\fastfetch\koala.txt"
 }
 
 # Start Oh-My-Posh with the specified configuration file.
