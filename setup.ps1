@@ -36,7 +36,21 @@ if (-not (Test-InternetConnection)) {
 }
 
 try {
-    winget install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
+    $fallbackPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
+    if (Get-Command winget -ErrorAction SilentlyContinue) {
+        Write-Host "winget is available in PATH." -ForegroundColor Green
+        $wingetCmd = "winget"
+    }
+    elseif (Test-Path $fallbackPath) {
+        Write-Host "winget not found in PATH, but found at fallback path." -ForegroundColor Yellow
+        $wingetCmd = $fallbackPath
+    }
+    else {
+        Write-Error "winget is not installed or could not be found."
+        return
+    }
+
+    & $wingetCmd install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
 }
 catch {
     Write-Error "Failed to install Oh My Posh or Starship. Error: $_"
@@ -146,7 +160,7 @@ else {
 
 ### Creation of config folder for vscode and symbolic links to customization of VSCode.
 $folderPath = "C:\.config"
-$sourceDir  = "$HOME\Documents\Powershell\Customization"
+$sourceDir = "$HOME\Documents\Powershell\Customization"
 
 # Ensure the destination folder exists
 if (-not (Test-Path -Path $folderPath)) {
@@ -166,8 +180,8 @@ if (-not (Test-Path -Path "$folderPath\ohmyposh")) {
 
 # Define the links to manage: LinkPath => TargetPath
 $links = @{
-    "$folderPath\vscode\custom.css" = "$sourceDir\vscode\custom.css"
-    "$folderPath\vscode\custom.js"  = "$sourceDir\vscode\custom.js"
+    "$folderPath\vscode\custom.css"                  = "$sourceDir\vscode\custom.css"
+    "$folderPath\vscode\custom.js"                   = "$sourceDir\vscode\custom.js"
     "$folderPath\ohmyposh\catpuccino-mocha.omp.json" = "$sourceDir\ohmyposh\catpuccino-mocha.omp.json"
 }
 
@@ -176,7 +190,8 @@ foreach ($link in $links.GetEnumerator()) {
     if (-not (Test-Path -Path $link.Key)) {
         New-Item -ItemType SymbolicLink -Path $link.Key -Value $link.Value | Out-Null
         Write-Host "Created symbolic link for: $($link.Name)"
-    } else {
+    }
+    else {
         Write-Host "Symbolic link already exists: $($link.Name)"
     }
 }
