@@ -51,6 +51,7 @@ try {
     }
 
     & $wingetCmd install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
+    & $wingetCmd install -e --id Fastfetch-cli.Fastfetch
 }
 catch {
     Write-Error "Failed to install Oh My Posh or Starship. Error: $_"
