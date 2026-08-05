@@ -128,18 +128,27 @@ else {
 }
 
 ### Creation of config folder for vscode and symbolic links to customization of VSCode.
-$currentUser = [Environment]::UserName
 $folderPath = "C:\.config\vscode"
+$sourceDir  = "$HOME\Documents\Powershell\Customization\vscode"
+
+# Ensure the destination folder exists
 if (-not (Test-Path -Path $folderPath)) {
-    New-Item -Path $folderPath -ItemType Directory
-    New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.css" -Target "C:\Users\${currentUser}\Documents\Powershell\Customization\vscode\custom.css"
+    New-Item -Path $folderPath -ItemType Directory | Out-Null
+    Write-Host "Created directory: $folderPath"
+}
 
-    New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.js" -Target "C:\Users\${currentUser}\Documents\Powershell\Customization\vscode\custom.js"
-    Write-Host "Folder created and symbolic link established."
-} else {
-    New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.css" -Target "C:\Users\${currentUser}   \Documents\Powershell\Customization\vscode\custom.css"
+# Define the links to manage: LinkPath => TargetPath
+$links = @{
+    "$folderPath\custom.css" = "$sourceDir\custom.css"
+    "$folderPath\custom.js"  = "$sourceDir\custom.js"
+}
 
-    New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.js" -Target "C:\Users\${currentUser}\Documents\Powershell\Customization\vscode\custom.js"
-
-    Write-Host "Folder already exists."
+# Create links only if they do not already exist
+foreach ($link in $links.GetEnumerator()) {
+    if (-not (Test-Path -Path $link.Key)) {
+        New-Item -ItemType SymbolicLink -Path $link.Key -Value $link.Value | Out-Null
+        Write-Host "Created symbolic link for: $($link.Name)"
+    } else {
+        Write-Host "Symbolic link already exists: $($link.Name)"
+    }
 }
