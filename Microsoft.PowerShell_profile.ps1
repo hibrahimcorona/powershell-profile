@@ -6,8 +6,8 @@ if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
     fastfetch --logo "$env:USERPROFILE\.config\fastfetch\koala.txt"
 }
 
-# Starship
-oh-my-posh init pwsh | Invoke-Expression
+# Start Oh-My-Posh with the specified configuration file.
+oh-my-posh init pwsh --config "c:\.config\ohmyposh\catpuccino-mocha.omp.json" | Invoke-Expression
 
 # Aliases
 Set-Alias -Name bash -Value "C:\Program Files\Git\bin\bash.exe"

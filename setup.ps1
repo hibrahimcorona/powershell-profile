@@ -1,4 +1,22 @@
+####
 #### Most of the commands were taken from the following file: https://github.com/ChrisTitusTech/powershell-profile/blob/main/setup.ps1
+####
+####
+
+
+$currentIdentity = [Security.Principal.WindowsIdentity]::GetCurrent()
+$principal = New-Object Security.Principal.WindowsPrincipal($currentIdentity)
+$isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+if (-not $isAdmin) {
+    Write-Warning "Not running as Admin. Requesting elevation..."
+
+    $scriptPath = $MyInvocation.MyCommand.Path
+    $arguments = $MyInvocation.BoundParameters
+
+    Start-Process pwsh -ArgumentList "-File `"$scriptPath`"" -Verb RunAs
+}
+Write-Host "Success! You are running PowerShell 7 as Administrator." -ForegroundColor Green
 
 # Function to test internet connectivity
 function Test-InternetConnection {
@@ -127,8 +145,8 @@ else {
 }
 
 ### Creation of config folder for vscode and symbolic links to customization of VSCode.
-$folderPath = "C:\.config\vscode"
-$sourceDir  = "$HOME\Documents\Powershell\Customization\vscode"
+$folderPath = "C:\.config"
+$sourceDir  = "$HOME\Documents\Powershell\Customization"
 
 # Ensure the destination folder exists
 if (-not (Test-Path -Path $folderPath)) {
@@ -136,10 +154,21 @@ if (-not (Test-Path -Path $folderPath)) {
     Write-Host "Created directory: $folderPath"
 }
 
+if (-not (Test-Path -Path "$folderPath\vscode")) {
+    New-Item -Path "$folderPath\vscode" -ItemType Directory | Out-Null
+    Write-Host "Created directory: $folderPath\vscode"
+}
+
+if (-not (Test-Path -Path "$folderPath\ohmyposh")) {
+    New-Item -Path "$folderPath\ohmyposh" -ItemType Directory | Out-Null
+    Write-Host "Created directory: $folderPath\ohmyposh"
+}
+
 # Define the links to manage: LinkPath => TargetPath
 $links = @{
-    "$folderPath\custom.css" = "$sourceDir\custom.css"
-    "$folderPath\custom.js"  = "$sourceDir\custom.js"
+    "$folderPath\vscode\custom.css" = "$sourceDir\vscode\custom.css"
+    "$folderPath\vscode\custom.js"  = "$sourceDir\vscode\custom.js"
+    "$folderPath\ohmyposh\catpuccino-mocha.omp.json" = "$sourceDir\ohmyposh\catpuccino-mocha.omp.json"
 }
 
 # Create links only if they do not already exist
