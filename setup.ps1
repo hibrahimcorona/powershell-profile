@@ -127,13 +127,19 @@ else {
     }
 }
 
+### Creation of config folder for vscode and symbolic links to customization of VSCode.
 $currentUser = [Environment]::UserName
 $folderPath = "C:\.config\vscode"
 if (-not (Test-Path -Path $folderPath)) {
     New-Item -Path $folderPath -ItemType Directory
     New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.css" -Target "C:\Users\${currentUser}\Documents\Powershell\Customization\vscode\custom.css"
+
+    New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.js" -Target "C:\Users\${currentUser}\Documents\Powershell\Customization\vscode\custom.js"
     Write-Host "Folder created and symbolic link established."
 } else {
     New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.css" -Target "C:\Users\${currentUser}   \Documents\Powershell\Customization\vscode\custom.css"
+
+    New-Item -ItemType SymbolicLink -Path "C:\.config\vscode\custom.js" -Target "C:\Users\${currentUser}\Documents\Powershell\Customization\vscode\custom.js"
+
     Write-Host "Folder already exists."
 }

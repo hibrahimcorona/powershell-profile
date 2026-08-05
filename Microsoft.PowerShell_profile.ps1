@@ -2,18 +2,15 @@
 ######### CUSTOMIZATION #########
 #################################
 
-$ENV:STARSHIP_CONFIG = "$HOME/.config/starship.toml"
+$ENV:STARSHIP_CONFIG = "$HOME/.config/starship/starship.toml"
 
 if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
     #fastfetch -c "$HOME/.config/fastfetch/config.jsonc"
     fastfetch --logo "$env:USERPROFILE\.config\fastfetch\koala.txt"
 }
 
-# Oh-My-Posh
-#oh-my-posh init pwsh --config $env:USERPROFILE'\AppData\Local\Programs\oh-my-posh\themes\honukai.omp.json' | Invoke-Expression
 # Starship
 Invoke-Expression (&starship init powershell)
-
 
 # Aliases
 Set-Alias -Name bash -Value "C:\Program Files\Git\bin\bash.exe"
@@ -118,7 +115,7 @@ function Clear-NonExistentBranches {
         }
 
         # Return to the original directory
-        Set-Location - 
+        Set-Location -
     }
 
     # Get the root Git repository
@@ -207,7 +204,7 @@ function tail {
 
 function touch($file) { "" | Out-File $file -Encoding ASCII }
 
-function ff($name) { 
+function ff($name) {
     Get-ChildItem -recurse -filter "*$name*" -ErrorAction SilentlyContinue | ForEach-Object {
         Write-Output "$($_.directory)\$($_)"
     }
@@ -218,8 +215,8 @@ function reload() {
 }
 
 function me {
-    if (Test-Path -Path "d:\code") { Set-Location "d:\code" } 
-    elseif (Test-Path -Path "c:\repo") { Set-Location "C:\repo" } 
+    if (Test-Path -Path "d:\code") { Set-Location "d:\code" }
+    elseif (Test-Path -Path "c:\repo") { Set-Location "C:\repo" }
     elseif (Test-Path -Path "c:\code") { Set-Location "c:\code" }
 }
 
