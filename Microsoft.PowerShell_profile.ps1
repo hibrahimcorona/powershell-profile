@@ -6,6 +6,8 @@ if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
     fastfetch --logo "c:\.config\fastfetch\koala.txt" --config "c:\.config\fastfetch\config.jsonc"
 }
 
+Import-Module -Name Terminal-Icons
+
 # Start Oh-My-Posh with the specified configuration file.
 oh-my-posh init pwsh --config "c:\.config\ohmyposh\catpuccino-mocha.omp.json" | Invoke-Expression
 
