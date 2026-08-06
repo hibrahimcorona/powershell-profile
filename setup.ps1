@@ -194,3 +194,18 @@ foreach ($link in $links.GetEnumerator()) {
         Write-Host "Symbolic link already exists: $($link.Name)"
     }
 }
+
+$no = ("no", "n")
+$yes = ("yes", "y")
+do
+{
+  $answer = Read-Host "Setup complete, do you want to reload your profile?"
+} until ($no -contains $answer -or $yes -contains $answer)
+
+if ($no -contains $answer){
+  Write-Host "Setup completed!"
+  }
+  elseif ($yes -contains $answer){
+      . $PROFILE
+    }
+
