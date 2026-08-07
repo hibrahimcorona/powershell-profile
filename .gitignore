@@ -4,3 +4,4 @@
 # Ignore the Modules and Scripts folders.
 Modules/
 Scripts/
+oldprofile.ps1
