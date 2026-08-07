@@ -28,6 +28,7 @@ if ([System.IO.File]::Exists($nvimPath)) {
 ####    Git Commands
 function gcl($url) { git clone $url }
 function gpr { git pull --rebase }
+function gprm { git pull --rebase origin main }
 function gs { git status }
 function gss { git status -s }
 function ga { git add . }
